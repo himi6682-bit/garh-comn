@@ -1,0 +1,8 @@
+{
+  "port": 8787,
+  "adminUsername": "admin",
+  "adminPassword": "",
+  "adminDisplayName": "Admin",
+  "https": false,
+  "maxUploadMb": 8
+}

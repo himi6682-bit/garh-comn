@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Garh-Comn</string>
+    <string name="host_channel">Garh-Comn hosting</string>
+    <string name="host_channel_desc">Shown while this tablet is hosting Garh-Comn for the local network.</string>
+</resources>

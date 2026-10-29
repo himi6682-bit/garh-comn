@@ -1,0 +1,53 @@
+{
+  "name": "garh-comn",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WhatsApp-style chat that stays on your local network. One tablet hosts it.",
+  "type": "module",
+  "main": "desktop/main.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test --test-concurrency=4 tests/*.test.js",
+    "desktop": "electron desktop/main.js",
+    "build:win": "electron-builder --win portable --x64",
+    "build:android": "bash scripts/build-android.sh",
+    "cert": "node scripts/generate-cert.js",
+    "address": "node scripts/print-address.js",
+    "icons": "node scripts/generate-icons.js",
+    "test:java": "bash scripts/test-java-server.sh"
+  },
+  "build": {
+    "appId": "com.garhcomn.app",
+    "productName": "Garh-Comn",
+    "executableName": "garh-comn",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/sql.js/dist/*.wasm"
+    ],
+    "npmRebuild": false,
+    "files": [
+      "desktop/**/*",
+      "server/**/*",
+      "public/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "signAndEditExecutable": false,
+      "artifactName": "garh-comn.exe"
+    }
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "express": "4.22.3",
+    "multer": "2.5.0",
+    "sql.js": "1.15.2",
+    "ws": "8.22.0"
+  }
+}

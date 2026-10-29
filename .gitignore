@@ -1,0 +1,14 @@
+node_modules/
+data/
+config.json
+*.log
+.DS_Store
+*.tmp
+dist/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/keystore.properties
+*.jks
+server-java/build/

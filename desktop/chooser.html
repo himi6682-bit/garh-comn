@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Garh-Comn</title>
+  <style>
+    body { margin: 0; font-family: "Segoe UI", sans-serif; background: #100e0c; color: #f6f1e8; }
+    main { max-width: 520px; margin: 0 auto; padding: 28px 20px 40px; }
+    h1 { font-family: Georgia, serif; font-weight: 600; font-size: 42px; margin: 0 0 8px; }
+    p { color: #b7ad9f; line-height: 1.45; }
+    button, input { font: inherit; }
+    input { width: 100%; box-sizing: border-box; background: #0c0b09; color: #f6f1e8; border: 1px solid rgba(246,241,232,.2); border-radius: 12px; padding: 12px; margin: 6px 0 12px; }
+    button { min-height: 46px; border: 0; border-radius: 12px; padding: 0 16px; background: #ef6a32; color: #1a100c; font-weight: 700; width: 100%; }
+    button.ghost { background: transparent; color: #f6f1e8; border: 1px solid rgba(246,241,232,.2); margin-top: 8px; }
+    .error { color: #ffb1a8; }
+    #hosts button { margin-top: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Garh-Comn</h1>
+    <p>Host the chat on this computer, or join a tablet that is already hosting.</p>
+    <div id="setup">
+      <label>Display name<input id="name" value="Admin"></label>
+      <label>Username<input id="user" value="admin"></label>
+      <label>Password<input id="password" type="text" placeholder="8 or more characters"></label>
+    </div>
+    <button id="host" type="button">Host on this computer</button>
+    <p id="error" class="error"></p>
+    <label>Host address<input id="address" placeholder="192.168.4.20 or http://192.168.4.20:8787"></label>
+    <button id="join" class="ghost" type="button">Join a host</button>
+    <div id="hosts"></div>
+  </main>
+  <script>
+    const setup = document.getElementById("setup");
+    porch.needsSetup().then((needed) => { setup.hidden = !needed; });
+    document.getElementById("host").onclick = async () => {
+      document.getElementById("error").textContent = "";
+      const result = await porch.host({
+        displayName: document.getElementById("name").value,
+        username: document.getElementById("user").value,
+        password: document.getElementById("password").value,
+      });
+      if (result.error) document.getElementById("error").textContent = result.error;
+    };
+    document.getElementById("join").onclick = () => porch.join(document.getElementById("address").value);
+    porch.onHosts((hosts) => {
+      const box = document.getElementById("hosts");
+      box.replaceChildren();
+      for (const host of hosts) {
+        for (const row of host.addresses || []) {
+          const button = document.createElement("button");
+          button.className = "ghost";
+          button.type = "button";
+          button.textContent = "Found " + (row.label || "network") + "  " + row.url;
+          button.onclick = () => porch.join(row.url);
+          box.append(button);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

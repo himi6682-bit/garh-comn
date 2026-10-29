@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#100e0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Garh-Comn</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div id="boot" class="boot">
+    <div class="mark" aria-hidden="true"></div>
+    <p class="word">Garh-Comn</p>
+    <p class="muted">Opening the room…</p>
+  </div>
+
+  <section id="login-view" class="login" hidden>
+    <form id="login-form" class="card" autocomplete="on">
+      <div class="mark" aria-hidden="true"></div>
+      <h1 class="word">Garh-Comn</h1>
+      <p class="lede">Messages stay on this network. Nothing is sent to the internet.</p>
+      <label>Username
+        <input id="login-username" name="username" autocomplete="username" autocapitalize="none" required>
+      </label>
+      <label>Password
+        <span class="password-row">
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+          <button type="button" id="toggle-password" class="text-btn">Show</button>
+        </span>
+      </label>
+      <p id="login-error" class="form-error" hidden></p>
+      <button class="btn primary" type="submit">Sign in</button>
+      <button type="button" id="retry-btn" class="btn ghost" hidden>Try again</button>
+      <p class="fine">An admin creates every account. There is no sign-up.</p>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark small" aria-hidden="true"></span>
+        <span class="word">Garh-Comn</span>
+      </div>
+      <p id="conn" class="conn" role="status">Connecting…</p>
+      <div class="top-actions">
+        <button type="button" id="admin-btn" class="btn ghost" data-admin-only hidden>Admin</button>
+        <span id="me-name" class="me-name"></span>
+        <button type="button" id="logout-btn" class="btn ghost">Log out</button>
+      </div>
+    </header>
+    <div id="address-strip" class="address-strip" hidden></div>
+
+    <div id="chat-shell" class="shell">
+      <aside class="sidebar">
+        <div class="side-tabs" role="tablist">
+          <button type="button" class="side-tab" data-panel="chats" aria-selected="true">Chats</button>
+          <button type="button" class="side-tab" data-panel="people" aria-selected="false">People</button>
+        </div>
+        <div id="panel-chats" class="panel">
+          <div class="panel-tools">
+            <input id="chat-search" type="search" placeholder="Search chats" aria-label="Search chats">
+            <button type="button" id="new-chat-btn" class="btn primary slim">New chat</button>
+            <button type="button" id="new-group-btn" class="btn ghost slim" data-admin-only hidden>New group</button>
+          </div>
+          <div id="chat-list" class="list"></div>
+        </div>
+        <div id="panel-people" class="panel" hidden>
+          <div class="panel-tools">
+            <input id="people-search" type="search" placeholder="Search people" aria-label="Search people">
+          </div>
+          <div id="people-list" class="list"></div>
+        </div>
+      </aside>
+
+      <section class="stage">
+        <div id="empty-thread" class="empty-state">
+          <div class="mark" aria-hidden="true"></div>
+          <h2>Choose a conversation</h2>
+          <p>Everyone on this network is already in the group called Everyone. Direct messages stay between two people.</p>
+        </div>
+        <div id="thread" class="thread" hidden>
+          <header class="thread-head">
+            <button type="button" id="back-btn" class="back-btn" aria-label="Back to chats">‹</button>
+            <div class="titles">
+              <h2 id="thread-title"></h2>
+              <p id="thread-sub" class="muted"></p>
+            </div>
+            <button type="button" id="group-info-btn" class="btn ghost slim" hidden>Info</button>
+          </header>
+          <div id="messages" class="messages" role="log" aria-live="polite"></div>
+          <form id="composer" class="composer">
+            <button type="button" id="attach-btn" class="icon-btn" aria-label="Attach a file">＋</button>
+            <input id="file-input" type="file" hidden accept="image/*,audio/*,.pdf,.txt,.csv,.zip,.doc,.docx">
+            <textarea id="composer-text" rows="1" maxlength="4000" placeholder="Message" aria-label="Message"></textarea>
+            <button class="btn primary send" type="submit">Send</button>
+          </form>
+          <div id="file-chip" class="file-chip" hidden></div>
+        </div>
+      </section>
+    </div>
+
+    <section id="admin-view" class="admin" hidden>
+      <div class="admin-body">
+      <div class="admin-head">
+        <button type="button" id="admin-back" class="btn ghost">Back to chats</button>
+        <h2>Accounts</h2>
+      </div>
+      <div id="admin-addresses" class="address-cards"></div>
+      <form id="create-user-form" class="create-card" autocomplete="off">
+        <h3>Create an account</h3>
+        <div class="create-grid">
+          <label>Display name
+            <input id="new-display" required maxlength="40" autocomplete="off">
+          </label>
+          <label>Username
+            <input id="new-username" required maxlength="32" autocapitalize="none" autocomplete="off">
+          </label>
+          <label>Password
+            <span class="password-row">
+              <input id="new-password" required minlength="8" maxlength="72" autocomplete="new-password">
+              <button type="button" id="generate-password" class="text-btn">Generate</button>
+            </span>
+          </label>
+        </div>
+        <p id="create-error" class="form-error" hidden></p>
+        <div class="row-actions">
+          <button class="btn primary" type="submit">Create account</button>
+          <button type="button" id="copy-password" class="btn ghost">Copy password</button>
+        </div>
+        <p id="create-note" class="fine" hidden></p>
+      </form>
+      <h2 class="section-title">Groups</h2>
+      <div id="group-list" class="user-list"></div>
+      <h2 class="section-title">Accounts</h2>
+      <div id="user-list" class="user-list"></div>
+      </div>
+      <footer class="imprint">© All rights reserved to Himanshu Negi, 22 Garh Rif</footer>
+    </section>
+
+    <nav class="tabbar">
+      <button type="button" data-panel="chats">Chats <span id="tab-unread" class="tab-badge" hidden></span></button>
+      <button type="button" data-panel="people">People</button>
+      <button type="button" data-panel="admin" data-admin-only hidden>Admin</button>
+    </nav>
+  </div>
+
+  <dialog id="modal" class="modal">
+    <div class="modal-card" role="document" aria-labelledby="modal-title">
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+    </div>
+  </dialog>
+  <div id="lightbox" class="lightbox" hidden>
+    <button type="button" class="lightbox-close" aria-label="Close">Close</button>
+    <img alt="">
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p class="boot">Garh-Comn needs JavaScript. It only talks to the host on your local network.</p></noscript>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
